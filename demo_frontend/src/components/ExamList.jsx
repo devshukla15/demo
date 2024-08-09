@@ -1,19 +1,35 @@
-import React, { useState } from "react"
+import React, { useDeferredValue, useEffect, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 const ExamList = ({ exams }) => {
   const [visibleExamIndex, setVisibleExamIndex] = useState(null)
+  const [filteredExams,setFilteredExams] = useState(exams)
+  const [query,setQUery] = useState('')
+  const searchQuery = useDeferredValue(query)
 
   const toggleQuestionsVisibility = (index) => {
     setVisibleExamIndex(visibleExamIndex === index ? null : index)
   }
 
+  useMemo(() => {
+    if(query === "") setFilteredExams(exams)
+    else {
+    const newExams = {...filteredExams, exams: exams?.exams.filter((exam) => exam.subject?.toLowerCase().includes(query))}
+    setFilteredExams(newExams)
+  }
+},[searchQuery])
+
+useEffect(() => {
+  setFilteredExams(exams)
+}, [exams])
+  
   return (
     <div>
-      <h3>Exams</h3>
+      <h2>Exams</h2>
       <ul>
-        {exams &&
-          exams.exams.map((exam, index) => (
+        <input type="text" placeholder="Search exams" onChange={(e) =>setQUery(e.target.value)} />
+        {filteredExams &&
+          filteredExams.exams.map((exam, index) => (
             <li key={index}>
               <p>Subject: {exam.subject}</p>
               <p>Number of Questions: {exam.numQuestions}</p>
@@ -35,7 +51,7 @@ const ExamList = ({ exams }) => {
                           ))}
                         </ul>
                       ) : null}
-                      <Link to={`/exam/${index}`}>Go to Exam</Link>
+                      <Link to={`/exam/${exam?._id}`}>Go to Exam</Link>
                     </li>
                   ))}
                 </ul>

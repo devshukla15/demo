@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import api from "../services/api"
 
-export const fetchExams = createAsyncThunk("exams/fetchExams", async () => {
-  const response = await api.get("/exams")
+export const fetchExams = createAsyncThunk("exams/fetchExams", async (id) => {
+  const reqId = id ?? ''
+  const response = await api.get(`/exams?id=${reqId}`)
   return response.data
 })
 

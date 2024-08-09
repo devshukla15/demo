@@ -32,7 +32,6 @@ const SubjectList = () => {
   if (status === "failed") {
     return <p>{error}</p>
   }
-  console.log(subjects?.subjects)
 
   return (
     <div>

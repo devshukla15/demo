@@ -1,30 +1,28 @@
 import React from "react"
 import { useParams } from "react-router-dom"
-import { useSelector } from "react-redux"
+import {  useSelector } from "react-redux"
 import "../style.css"
 
 const ExamView = () => {
   const { id } = useParams()
-  const exams = useSelector((state) => state.exams)
-  console.log(exams)
 
   const exam = useSelector((state) =>
-    state?.exams?.exams?.find((exam, index) => index.toString() === id)
+    state?.exams?.exams?.find((exam, index) => exam?._id === id)
   )
-
+  
   if (!exam) {
     return <p>Exam not found</p>
   }
-
+  
   // Shuffle questions
-  const shuffledQuestions = exam.questions
-    .sort(() => Math.random() - 0.5)
-    .slice(0, exam.numQuestions)
+  const shuffledQuestions = exam?.questions
 
+ 
+  
   return (
     <div className="container">
       <h3>Exam for {exam.subject}</h3>
-      {shuffledQuestions.map((question, index) => (
+      {shuffledQuestions && shuffledQuestions?.map((question, index) => (
         <div key={index} className="exam-question">
           <p>{question.text}</p>
           {question.type === "Radio" || question.type === "Checkbox" ? (

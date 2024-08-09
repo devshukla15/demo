@@ -13,6 +13,7 @@ import "./style.css"
 
 const App = () => {
   const exams = useSelector((state) => state.exams)
+
   return (
     <div className="container">
       <Router>

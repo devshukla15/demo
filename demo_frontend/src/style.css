@@ -38,6 +38,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin: 5px;
+  height: fit-content;
 }
 
 button:hover {
@@ -69,4 +70,9 @@ label {
 .exam-question input[type="radio"],
 .exam-question input[type="checkbox"] {
   margin-right: 10px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
 }
