@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { login } from "../feature/authSlice"
+import { login, register } from "../feature/authSlice"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
@@ -11,13 +11,18 @@ const Login = () => {
   const auth = useSelector((state) => state.auth)
 
   const handleSubmit = (e) => {
-    if (username === "admin" && password === "password") {
       e.preventDefault()
       dispatch(login({ credentials: { username, password }, navigate }))
-    } else {
-      alert("Invalid credentials")
-    }
   }
+
+  const handleRegister = () => {
+    dispatch(register({credentials:{username,password},navigate}))
+  }
+
+  useEffect(() => {
+    localStorage.removeItem("token")
+  }
+  ,[])
 
   return (
     <div>
@@ -36,6 +41,8 @@ const Login = () => {
           placeholder="Password"
         />
         <button type="submit">Login</button>
+        <button type="button" onClick={handleRegister}>Register</button>
+
       </form>
       {auth.status === "loading" && <p>Loading...</p>}
       {auth.error && <p>{auth.error}</p>}

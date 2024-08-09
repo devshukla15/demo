@@ -9,8 +9,9 @@ export const login = createAsyncThunk("auth/login", async (args) => {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async (credentials) => {
-    const response = await api.post("/auth/register", credentials)
+  async (args) => {
+    const response = await api.post("/auth/register",  { ...args.credentials })
+    response.status === 201 && args.navigate("/admin")
     return response.data
   }
 )
@@ -51,6 +52,7 @@ const authSlice = createSlice({
         state.status = "succeeded"
         state.user = action.payload
         state.token = action.payload.token
+        localStorage.setItem("token", action.payload.token)
       })
       .addCase(register.rejected, (state, action) => {
         state.status = "failed"
